@@ -1,0 +1,59 @@
+
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+    
+    <div class="hero-wrap" style="background-image: url({{article.get_image}});" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-7 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+             <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="{% url 'home' %}">Home</a></span> <span>{{article.title}}</span></p>
+            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">{{article.title}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% for image in images %}
+<img src="{{image}}" style="width:500px; length: 500px;" class="img-fluid" alt="Responsive image">
+{% endfor %}
+
+<section class="ftco-section">
+    	<div class="container">
+    		<div class="row d-flex">
+    			<div class="col-md-6 d-flex ftco-animate">
+    				<div class="img img-about align-self-stretch" style="background-image: url({{article.get_image}}); width: 100%;"></div>
+    			</div>
+    			<div class="col-md-6 pl-md-5 ftco-animate">
+    				<h2 class="mb-4">{{article.title}}</h2>
+                  <h4> {{article.created}}</h4>
+                  <p> {{article.desciption}}</p>
+                </div>
+                    <a href="{% url 'update_post' article.id %}"><button type="button" class="btn btn-outline-info mt-7" style="margin-top:100px; margin-left: 1000px;">Update</button></a>
+                    <a href="{% url 'delete_post' article.id %}"><button type="button" class="btn btn-outline-danger" style="margin-left: 800px; margin-top:-65px;">Delete</button></a>
+
+    			</div>
+    		</div>
+    	</div>
+<!--    <nav aria-label="...">-->
+<!--    {% if page_obj.has_previous %}-->
+<!--  <ul class="pagination pagination-lg">-->
+<!--      <li class="page-item"><a class="page-link" href="{% url 'category' %}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>-->
+<!--   {% endif %}-->
+<!--    <li class="page-item active" aria-current="page">-->
+<!--      <span class="page-link">{{ page_obj.number }}</span>-->
+<!--    </li>-->
+<!--    {% if page_obj.has_next %}-->
+<!--    <li class="page-item"><a class="page-link" href="{% url 'category' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>-->
+<!--  {% endif %}-->
+<!--  </ul>-->
+<!--</nav>-->
+    </section>
+
+
+
+
+
+{% endblock %}

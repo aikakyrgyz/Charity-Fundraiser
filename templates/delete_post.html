@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+    <div class="hero-wrap" style="background-image: url('/static/images/help.gif');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-7 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+             <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="{% url 'home'%}">Home</a></span> <span>Delete your Post</span></p>
+            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Delete your post</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="container" style="margin-top: 100px; text-align:center;">
+<h1 style="mt-10"> Are you sure you want to delete the post?</h1>
+</div>
+<div style="  width: auto;
+  color: #fff;
+  padding: 15px 43px;
+  font-weight: bold;
+  font-size: 50px;
+  border: none;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+     .submit:hover {
+    background: #f27ce6;">
+<form method="post" style="text-align:center; font-size:50px;">
+    {% csrf_token %}
+    <input class="btn btn-primary" type="submit" value="Yes">
+    <a class="btn" href="{% url 'home'%}" role="button">Cancel</a>
+
+</form>
+</div>
+
+{% endblock%}

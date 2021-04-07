@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="hero-wrap" style="background-image: url({{category.image.url}});" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-7 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+             <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="{% url 'home' %}">Home</a></span> <span>{{ category.name }}</span></p>
+            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">{{ category.name }}{{category.created}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <section class="ftco-section">
+    {% if category.get_children  %}
+      <div class="container">
+        <div class="row d-flex">
+            {% for child in category.get_children %}
+
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry align-self-stretch">
+              <a href="{% url 'category' child.slug %}" class="block-20" style="background-image: url({{child.image.url}});">
+              </a>
+              <div class="text p-4 d-block">
+              	<div class="meta mb-3">
+                  <div><a href="#">{{ child.user }}</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mt-3"><a href="{% url 'category' child.slug %}">{{ child.name }}</a></h3>
+                <p style="color:white;">hfjdshfjdhsjfhdjshfjsdhfjhdsjfhjksdhfsd</p>
+              </div>
+            </div>
+          </div>
+            {% endfor%}
+        </div>
+      </div>
+        </section>
+
+{% endif%}
+<div class="mb-10">
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<div class="alert alert-success" role="alert">{{ message }}</div>
+	{% endfor%}
+</ul>
+{% endif %}
+</div>
+
+{% if not category.get_children %}
+ <div class="container">
+        <div class="row d-flex">
+            {% for article in articles %}
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry align-self-stretch">
+              <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">
+              </a>
+              <div class="text p-4 d-block">
+              	<div class="meta mb-3">
+                  <div><a href="#">{{ article.created}}</a></div>
+
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mt-3"><a href="{% url 'article' article.id %}">{{ article.title }}</a></h3>
+                <p> {{article.desciption|truncatewords:10}}</p>
+              </div>
+            </div>
+          </div>
+                        {% endfor%}
+        </div>
+      </div>
+{% endif%}
+<!--<div class="mb-5">-->
+<!--<nav aria-label="...">-->
+<!--  <ul class="pagination pagination-sm">-->
+<!--      {% if page_obj.has_previous %}-->
+<!--      <li class="page-item"><a class="page-link" href="{% url 'category' category.slug %}?page={{page_obj.previous_page_number}}">{{page_obj.previous_page_number}}</a></li>-->
+<!--        {%endif%}-->
+<!--    <li class="page-item active" aria-current="page">-->
+<!--      <span class="page-link">{{page_obj.number}}</span>-->
+<!--    </li>-->
+<!--            {% if page_obj.has_next %}-->
+<!--    <li class="page-item"><a class="page-link" href="{% url 'category' category.slug %}?page={{page_obj.next_page_number}}">{{page_obj.next_page_number}}</a></li>-->
+<!--      {% endif%}-->
+<!--  </ul>-->
+<!--</nav>-->
+<!--</div>-->
+<!--<nav aria-label="...">-->
+<!--    {% if page_obj.has_previous %}-->
+<!--  <ul class="pagination pagination-lg">-->
+<!--      <li class="page-item"><a class="page-link" href="{% url 'category' %}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>-->
+<!--   {% endif %}-->
+<!--    <li class="page-item active" aria-current="page">-->
+<!--      <span class="page-link">{{ page_obj.number }}</span>-->
+<!--    </li>-->
+<!--    {% if page_obj.has_next %}-->
+<!--    <li class="page-item"><a class="page-link" href="{% url 'category' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>-->
+<!--  {% endif %}-->
+<!--  </ul>-->
+<!--</nav>-->
+
+
+<!--<h1> {{page_obj_number }}</h1>-->
+
+<!--Pagination-->
+
+
+
+<!--        <div class="row mt-5">-->
+<!--          <div class="col text-center">-->
+<!--            <div class="block-27">-->
+<!--              <ul>-->
+<!--                  {% if page_obj.has_previous %}-->
+<!--                <li><a href="{% url 'category' %}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>-->
+<!--                  {% endif %}-->
+<!--                <li class="active"><span></span>{{ page_obj.number }}</li>-->
+<!--                  {% if page_obj.has_next %}-->
+<!--                <li><a href="{% url 'category' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}"</a></li>-->
+<!--                  {% endif %}-->
+<!--                <li><a href="#">3</a></li>-->
+<!--                <li><a href="#">4</a></li>-->
+<!--                <li><a href="#">5</a></li>-->
+<!--                <li><a href="#">&gt;</a></li>-->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+{% endblock%}
