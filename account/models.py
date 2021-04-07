@@ -12,7 +12,6 @@ class User(AbstractUser):
     location = models.CharField(default='Bishkek/Kyrgyzstan', max_length=100)
     points = models.IntegerField(default=0)
     donation_total = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True)
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 

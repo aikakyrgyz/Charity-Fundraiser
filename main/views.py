@@ -3,13 +3,13 @@ from django.db.models import Q
 from django.contrib import messages
 from django.forms import modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, DeleteView
-from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, DeleteView, CreateView
+from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import ImageForm
 from .permissions import *
 from main.models import *
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 
 # def index(request):
@@ -59,21 +59,45 @@ class CategoryDetailView(DetailView):
         context['articles'] = Article.objects.filter(category_id=self.slug)
         return context
 
-# def article_detail(request, pk):
-#     article = get_object_or_404(Article, pk=pk)
-#     image = article.get_image
-#     images = article.article_images.exclude(id = image.id)
-#     return render(request, 'blog-single.html', locals())
 
-class ArticleDetailView(DetailView):
-    model = Article
-    template_name = 'blog-single.html'
-    context_object_name = 'article'
-    def get_context_data(self, **kwargs):
-        context = super(). get_context_data(**kwargs)
-        image = self.get_object().get_image
-        context['images'] = self.get_object().article_images.exclude(id=image.id)
-        return context
+def article_detail(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    image = article.get_image
+    images = article.article_images.exclude(id = image.id)
+    comments = article.comments.all()
+    new_comment = None
+    if request.method == 'POST':
+        # A comment was posted
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # Assign the current post to the comment
+            new_comment.post = article
+            # Save the comment to the database
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+
+    liked = False
+    favorited =False
+    if article.favorites.filter(id=request.user.id).exists():
+        favorited=True
+    if article.likes.filter(id=request.user.id).exists():
+        liked = True
+    number_of_likes = article.total_likes()
+    post_is_liked = liked
+    return render(request, 'blog-single.html', locals())
+
+# class ArticleDetailView(DetailView):
+#     model = Article
+#     template_name = 'blog-single.html'
+#     context_object_name = 'article'
+#     def get_context_data(self, **kwargs):
+#         context = super(). get_context_data(**kwargs)
+#         image = self.get_object().get_image
+#         context['images'] = self.get_object().article_images.exclude(id=image.id)
+#         return context
 
 @login_required(login_url='login')
 def create_post(request):
@@ -97,7 +121,6 @@ def create_post(request):
 def update_post(request, pk):
     post = get_object_or_404(Article, pk=pk)
     if request.user == post.user:
-
         ImageFormSet = modelformset_factory(Image, form=ImageForm, max_num=5)
         post_form = PostForm(request.POST or None, instance = post)
         formset = ImageFormSet(request.POST or None, request.FILES or None, queryset=Image.objects.filter(article=post))
@@ -133,3 +156,29 @@ class DeleteArticleView(UserHasPermissionMixin, DeleteView):
         messages.add_message(request, messages.SUCCESS, 'Successfully deleted!')
         return HttpResponseRedirect(success_url)
 
+
+def PostLike(request, pk):
+    post = get_object_or_404(Article, id=pk)
+    print(request.POST)
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return HttpResponseRedirect(reverse('article', args=[str(pk)]))
+
+
+
+def favorite_post(request, pk):
+    post = get_object_or_404(Article, pk=pk)
+    if post.favorites.filter(id = request.user.id).exists():
+        post.favorites.remove(request.user)
+    else:
+        post.favorites.add(request.user)
+    return HttpResponseRedirect(post.get_absolute_url())
+
+
+def post_favorite_list(request):
+    user = request.user
+    favorite_posts = user.favorite.all()
+    return render(request, 'post_favorite_list.html', locals())

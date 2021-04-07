@@ -16,6 +16,7 @@
       </div>
     </div>
 
+
   {% for image in images %}
 <img src="{{image}}" style="width:500px; length: 500px;" class="img-fluid" alt="Responsive image">
 {% endfor %}
@@ -30,13 +31,60 @@
     				<h2 class="mb-4">{{article.title}}</h2>
                   <h4> {{article.created}}</h4>
                   <p> {{article.desciption}}</p>
-                </div>
-                    <a href="{% url 'update_post' article.id %}"><button type="button" class="btn btn-outline-info mt-7" style="margin-top:100px; margin-left: 1000px;">Update</button></a>
-                    <a href="{% url 'delete_post' article.id %}"><button type="button" class="btn btn-outline-danger" style="margin-left: 800px; margin-top:-65px;">Delete</button></a>
 
-    			</div>
+                    {% if request.user.is_authenticated %}
+
+<!--             -----------       comment section ----------------->
+                <h2>Comment Section</h2>
+                {% for comment in comments %}
+                  <div class="comment">
+                    <p class="info">
+                      Comment {{ forloop.counter }} by {{ request.user.username }}
+                      {{ comment.date_created }}
+                    </p>
+                    {{ comment.body|linebreaks }}
+                  </div>
+                {% empty %}
+                  <p>There are no comments yet.</p>
+                {% endfor %}
+
+                    <!--             -----------       comment add ----------------->
+                    {% if new_comment %}
+                  <h2>Your comment has been added.</h2>
+                    {% else %}
+                  <h2>Add a new comment</h2>
+                  <form action="." method="post" style="width:auto;">
+                    {{ comment_form.as_p }}
+                    {% csrf_token %}
+                    <p><input type="submit" value="Add comment"></p>
+                  </form>
+                    {% endif %}
+                    <!----------------- LIKES ---------------------------->
+      <form action="{% url 'blogpost_like' article.id %}" method="POST">
+        {% csrf_token %}
+        {% if post_is_liked %}
+        <button type="submit" name="id" value="{{article.id}}" class="btn btn-info">Unlike</button>
+        {% else %}
+        <button type="submit" name="id" value="{{article.id}}" class="btn btn-info">Like</button>
+          {% endif %}
+            </form>
+<strong class="text-secondary">{{ number_of_likes }} Like{{ number_of_likes|pluralize }}</strong>
+
+<!--     -------------- Favorite-------------->
+                    <div id="favorite-section">
+                        {% if not favorited %}
+        <a href="{% url 'favorite_post' article.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark bi-lg" viewBox="0 0 16 16">
+  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+        </svg></a>
+          {%else%}
+<a href="{% url 'favorite_post' article.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zM8.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.178.178 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.178.178 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.178.178 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.178.178 0 0 1-.134-.098L8.16 4.1z"/>
+</svg></a>
+            {%endif%}
+                    <a href="{% url 'update_post' article.id %}"><button type="button" class="btn btn-outline-info mt-7" style="margin-top:0px; margin-left: 0px;">Update</button></a>
+                    <a href="{% url 'delete_post' article.id %}"><button type="button" class="btn btn-outline-danger" style="margin-left: 0px; margin-top: 0px;">Delete</button></a>
     		</div>
-    	</div>
+                    {% endif%}
 <!--    <nav aria-label="...">-->
 <!--    {% if page_obj.has_previous %}-->
 <!--  <ul class="pagination pagination-lg">-->
@@ -50,10 +98,10 @@
 <!--  {% endif %}-->
 <!--  </ul>-->
 <!--</nav>-->
-    </section>
-
-
-
+                </div>
+            </div>
+        </div>
+</section>
 
 
 {% endblock %}

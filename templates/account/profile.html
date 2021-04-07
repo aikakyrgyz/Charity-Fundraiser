@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <div class="hero-wrap" style="background-image: url({{request.user.image.url}}); " data-stellar-background-ratio="0.5">
+    <div class="hero-wrap" style="background-image: url({{request.user.image.url}}); " data-stellar-background-ratio="0.5" style="width:auto;">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
@@ -20,5 +20,6 @@
     <h1>{{request.user.username}}</h1>
     <p>{{request.user}}</p>
     <p>{{request.user.date_joined}}</p>
+    <p><a href="{% url 'post_favorite_list' %}">Favorite Posts</a></p>
 </div>
 {% endblock %}

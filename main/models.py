@@ -30,9 +30,15 @@ class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles')
     created = models.DateField(default=timezone.now())
     location = models.CharField(default='Bishkek/Kyrgyzstan', max_length=100)
+    #likes and comments
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
+    favorites = models.ManyToManyField(User, related_name='favorite', blank = True )
+
 
     def __str__(self):
         return self.title
+    def total_likes(self):
+        return self.likes.count()
 
     @property
     def get_image(self):
@@ -49,5 +55,20 @@ class Image(models.Model):
 
     def __str__(self):
         return self.image.url
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255) #person making the comment
+    body = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('date_added',)
+
+    def __str__(self):
+        return f'{self.post.title}-{self.name}'
+
 
 
