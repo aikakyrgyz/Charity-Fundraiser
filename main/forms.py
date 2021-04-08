@@ -20,4 +20,4 @@ class CommentForm(forms.ModelForm):
 class DonationForm(forms.ModelForm):
     class Meta:
         model = Donation
-        fields = '__all__'
+        fields = ('name', 'amount', 'card_number',)

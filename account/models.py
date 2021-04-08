@@ -11,10 +11,12 @@ class User(AbstractUser):
     telephone = models.CharField(max_length=15, blank=True)
     location = models.CharField(default='Bishkek/Kyrgyzstan', max_length=100)
     points = models.IntegerField(default=0)
-    donation_total = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True)
+    donation_total = models.DecimalField(max_digits=6, decimal_places=2, blank=True, default=0)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    def add_amount(self, amount):
+        self.donation_total+=amount
     def __str__(self):
         return self.get_full_name()
 

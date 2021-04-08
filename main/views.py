@@ -131,6 +131,10 @@ def make_donation(request):
         donation_form = DonationForm(request.POST)
         if donation_form.is_valid():
             donation = donation_form.save()
+            donation.user = request.user
+            total =request.user.donation_total
+            total += donation.amount
+            # request.user.add_amount(donation.amount)
             return redirect(reverse('home'))
     else:
             donation_form = DonationForm()

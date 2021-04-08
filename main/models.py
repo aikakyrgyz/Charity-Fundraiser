@@ -74,7 +74,7 @@ class Comment(models.Model):
 
 class Donation(models.Model):
     name = models.CharField(max_length=50)
-    user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE, default=1)
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     card_number = models.CharField(max_length=16)
 
