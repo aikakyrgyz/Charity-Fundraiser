@@ -33,7 +33,8 @@ class Article(models.Model):
     #likes and comments
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
     favorites = models.ManyToManyField(User, related_name='favorite', blank = True )
-
+    class Meta:
+        ordering = ['-created', ]
 
     def __str__(self):
         return self.title
@@ -59,6 +60,7 @@ class Image(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
     name = models.CharField(max_length=255) #person making the comment
     body = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)

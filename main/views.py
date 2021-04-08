@@ -10,11 +10,13 @@ from .forms import ImageForm
 from .permissions import *
 from main.models import *
 from .forms import PostForm, CommentForm
+from datetime import timedelta
+
 
 
 # def index(request):
 #     articles = Article.objects.all()
-#     return render(request, 'index.html', {'articles':articles})
+#     return render(request, 'profile.html', {'articles':articles})
 
 class MainPageView(ListView):
     model = Article
@@ -33,9 +35,13 @@ class MainPageView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         search = self.request.GET.get('q')
+        filter = self.request.GET.get('filter')
         if search:
             context['articles'] = Article.objects.filter(Q(title__icontains=search)|
                                                          Q(desciption__icontains=search))
+        elif filter:
+            start_date = timezone.now() - timedelta(days=1)
+            context['articles'] = Article.objects.filter(created__gte=start_date)
         else:
             context['articles'] = Article.objects.all()
         return context
@@ -74,6 +80,7 @@ def article_detail(request, pk):
         if comment_form.is_valid():
             # Create Comment object but don't save to database yet
             new_comment = comment_form.save(commit=False)
+            new_comment.user = request.user
             # Assign the current post to the comment
             new_comment.post = article
             # Save the comment to the database
