@@ -20,6 +20,8 @@ class MainPageView(ListView):
     model = Article
     template_name = 'index.html'
     context_object_name = 'articles'
+    paginate_by = 3
+
 
     def get_template_names(self):
         template_name = super(MainPageView, self).get_template_names()

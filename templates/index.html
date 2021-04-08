@@ -96,6 +96,67 @@
     </section>
 
 
+<!-------------All articles---------->
+    <section class="ftco-section bg-light">
+      <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section ftco-animate text-center">
+            <h2 class="mb-4">Our Latest Events</h2>
+          </div>
+        </div>
+        <div class="row">
+ {% for article in page_obj %}
+            <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry align-self-stretch" style="width:300px; height:auto;">
+              <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">
+              </a>
+              <div class="text p-4 d-block">
+              	<div class="meta mb-3">
+                  <div><a href="#">{{ article.created}}</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mb-4"><a href="{% url 'article' article.id %}">{{ article.title }}</a></h3>
+                <p class="time-loc"><span class="mr-2"><i class="icon-clock-o"></i></span> <span><i class="icon-map-o"></i></span></p>
+                <p>{{article.desciption|truncatewords:10}}</p>
+                <p><a href="{% url 'article' article.id %}">Read more <i class="ion-ios-arrow-forward"></i></a></p>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+        </div>
+      </div>
+    </section>
+
+<!----------End all articles---------->
+
+
+
+<!-------------Pagination--------------->
+        <div class="row mt-5" style=" display: block; margin-left: auto; margin-right: auto;">
+          <div class="col text-center" style=" display: block; margin-left: auto; margin-right: auto;">
+            <div class="block-27" style=" display: block; margin-left: auto; margin-right: auto;">
+<!--<nav aria-label="...">-->
+  <ul class="pagination pagination-lg ">
+      {% if page_obj.has_previous %}
+       <li class="page-item"><a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+      <li class="page-item active">
+      <a class="page-link" href="#" tabindex="-1">{{ page_obj.number }}</a>
+    </li>
+      {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+    {% endif %}
+                </ul>
+<!--</nav>-->
+            </div>
+          </div>
+        </div>
+<!-----------End nav------------->
+
+
+
+
     <section class="ftco-section bg-light">
     	<div class="container-fluid">
     		<div class="row justify-content-center mb-5 pb-3">
@@ -121,6 +182,11 @@
 		    					</div>
 		    				</div>
 	    				</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 <!--	    				<div class="item">-->
 <!--	    					<div class="cause-entry">-->
@@ -199,7 +265,6 @@
 <!--    			</div>-->
 <!--    		</div>-->
 <!--    	</div>-->
-	</section>
 
     <section class="ftco-section">
       <div class="container">
@@ -308,6 +373,27 @@
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section ftco-animate text-center">
             <h2 class="mb-4">Recent from blog</h2>
+              {% for article in page_obj %}
+              <div>
+          <div class="col-md-4 d-flex ftco-animate">
+            <div class="blog-entry align-self-stretch">
+              <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">
+              </a>
+              <div class="text p-4 d-block">
+                <div class="meta mb-3">
+                  <div><a href="#">{{ article.created}}</a></div>
+
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mt-3"><a href="{% url 'article' article.id %}">{{ article.title }}</a></h3>
+                <p> {{article.desciption|truncatewords:10}}</p>
+              </div>
+            </div>
+          </div>
+
+                        {% endfor%}
+
+
             <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
           </div>
         </div>
