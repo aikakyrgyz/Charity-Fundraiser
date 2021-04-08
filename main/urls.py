@@ -13,6 +13,7 @@ urlpatterns = [
     path('favorite-post/<int:pk>/', favorite_post, name='favorite_post'),
     path('delete-post/<int:pk>/', DeleteArticleView.as_view(), name = 'delete_post'),
     path('blogpost-like/<int:pk>', PostLike, name='blogpost_like'),
-    path('favorites/', post_favorite_list, name='post_favorite_list')
+    path('favorites/', post_favorite_list, name='post_favorite_list'),
+    path('donate/', make_donation, name = 'make_donation'),
 
 ]

@@ -72,5 +72,12 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.post.title}-{self.name}'
 
+class Donation(models.Model):
+    name = models.CharField(max_length=50)
+    user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=6, decimal_places=2)
+    card_number = models.CharField(max_length=16)
+
+
 
 

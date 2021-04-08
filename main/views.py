@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import ImageForm
 from .permissions import *
 from main.models import *
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, DonationForm
 from datetime import timedelta
 
 
@@ -124,6 +124,17 @@ def create_post(request):
         post_form = PostForm()
         formset = ImageFormSet(queryset=Image.objects.none())
     return render(request, 'create_post.html', locals())
+
+@login_required(login_url='login')
+def make_donation(request):
+    if request.method == 'POST':
+        donation_form = DonationForm(request.POST)
+        if donation_form.is_valid():
+            donation = donation_form.save()
+            return redirect(reverse('home'))
+    else:
+            donation_form = DonationForm()
+    return render(request, 'make_donation.html', locals())
 
 
 
