@@ -1,5 +1,5 @@
 from django import forms
-from .models import Article, Image, Comment, Donation
+from .models import Article, Image, Comment, Donation, Petition
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -21,3 +21,8 @@ class DonationForm(forms.ModelForm):
     class Meta:
         model = Donation
         fields = ('name', 'amount', 'card_number',)
+
+class PetitionForm(forms.ModelForm):
+    class Meta:
+        model = Petition
+        fields = ('title', 'body', 'category', 'image', 'goal_money', 'goal_signature')

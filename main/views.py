@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import ImageForm
 from .permissions import *
 from main.models import *
-from .forms import PostForm, CommentForm, DonationForm
+from .forms import PostForm, CommentForm, DonationForm, PetitionForm
 from datetime import timedelta
 
 
@@ -89,9 +89,12 @@ def article_detail(request, pk):
         comment_form = CommentForm()
 
     liked = False
-    favorited =False
+    favorited = False
+
     if article.favorites.filter(id=request.user.id).exists():
+
         favorited=True
+
     if article.likes.filter(id=request.user.id).exists():
         liked = True
     number_of_likes = article.total_likes()
@@ -131,15 +134,35 @@ def make_donation(request):
         donation_form = DonationForm(request.POST)
         if donation_form.is_valid():
             donation = donation_form.save()
-            donation.user = request.user
-            total =request.user.donation_total
-            total += donation.amount
+            amount = donation.amount
+            user_id = request.user.id
+            user = User.objects.get(pk=user_id)
+            user.donation_total+=amount
+            user.save()
+            # total += donation.amount
             # request.user.add_amount(donation.amount)
             return redirect(reverse('home'))
     else:
             donation_form = DonationForm()
     return render(request, 'make_donation.html', locals())
 
+@login_required(login_url='login')
+def create_petition(request):
+    if request.method == 'POST':
+        petition_form = PetitionForm(request.POST)
+        if petition_form.is_valid():
+            petition = petition_form.save()
+            # amount = petition.amount
+            # user_id = request.user.id
+            # user = User.objects.get(pk=user_id)
+            # user.donation_total+=amount
+            # user.save()
+            # total += donation.amount
+            # request.user.add_amount(donation.amount)
+            return redirect(reverse('home'))
+    else:
+            petition_form = PetitionForm()
+    return render(request, 'create_petition.html', locals())
 
 
 def update_post(request, pk):
@@ -204,5 +227,6 @@ def favorite_post(request, pk):
 
 def post_favorite_list(request):
     user = request.user
-    favorite_posts = user.favorite.all()
+    favorite_posts = user.favorite.all() # related name
     return render(request, 'post_favorite_list.html', locals())
+

@@ -15,8 +15,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-    def add_amount(self, amount):
-        self.donation_total+=amount
     def __str__(self):
         return self.get_full_name()
 

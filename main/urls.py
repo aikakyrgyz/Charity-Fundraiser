@@ -15,5 +15,6 @@ urlpatterns = [
     path('blogpost-like/<int:pk>', PostLike, name='blogpost_like'),
     path('favorites/', post_favorite_list, name='post_favorite_list'),
     path('donate/', make_donation, name = 'make_donation'),
+    path('petition/', create_petition, name='petition'),
 
 ]

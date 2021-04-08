@@ -32,20 +32,24 @@ class Article(models.Model):
     location = models.CharField(default='Bishkek/Kyrgyzstan', max_length=100)
     #likes and comments
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
-    favorites = models.ManyToManyField(User, related_name='favorite', blank = True )
+    favorites = models.ManyToManyField(User, related_name='favorite', blank=True)
+
     class Meta:
         ordering = ['-created', ]
 
     def __str__(self):
         return self.title
+
     def total_likes(self):
         return self.likes.count()
 
     @property
     def get_image(self):
         return self.article_images.first()
+
     def get_all_images(self):
         return self.article_images.filter
+
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('article', kwargs={'pk':self.pk})
@@ -72,11 +76,35 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.post.title}-{self.name}'
 
+
 class Donation(models.Model):
     name = models.CharField(max_length=50)
     user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE, default=1)
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     card_number = models.CharField(max_length=16)
+
+
+class Petition(models.Model):
+    title = models.CharField(max_length=50)
+    body = models.TextField()
+    category = models.ForeignKey(Category, related_name='petitions', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='petitions', on_delete=models.CASCADE, default=1)
+    image = models.ImageField(upload_to='petitions', blank=True, null = True)
+    created = models.DateField(default=timezone.now())
+    goal_money = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    current_money = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    goal_signature = models.IntegerField(default=0)
+    current_signature = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        ordering = ['-created', ]
+
+
+
+
 
 
 

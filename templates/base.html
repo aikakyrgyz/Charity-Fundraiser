@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_aidar.css' %}">
   </head>
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -42,8 +42,10 @@
         <span class="oi oi-menu"></span> Menu
       </button>
 
+
       <div class="collapse navbar-collapse" id="ftco-nav">
         <ul class="navbar-nav ml-auto">
+
           <li class="nav-item active"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
           {% for category in categories %}
           <li class="nav-item active"><a href="{% url 'category' category.slug %}" class="nav-link">{{ category }}</a></li>
@@ -52,18 +54,30 @@
           <li class="nav-item active"><a href="{% url 'login' %}" class="nav-link">Log in</a></li>
           <li class="nav-item active"><a href="{% url 'register' %}" class="nav-link">Register</a></li>
           {% else %}
+          <li class="nav-item active"><a href="{% url 'petition' %}" class="nav-link">Petition </a></li>
           <li class="nav-item active"><a href="{% url 'logout' %}" class="nav-link">Log Out </a></li>
           {% endif %}
+
+
 
 <!--          <li class="nav-item"><a href="blog.html" class="nav-link">Children</a></li>-->
 <!--          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>-->
 <!--          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
         </ul>
       </div>
-          <form class="d-flex" method="GET" action="{% url 'home' %}">
-      <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+
+<!--------------      Search---------------->
+
+<!--          <form class="d-flex" method="GET" action="{% url 'home' %}">-->
+<!--      <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--                  <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--    </form>-->
+      <form action="{% url 'home' %}" method = "GET" class="search-bar">
+    <input type="search" name="q" pattern=".*\S.*" required>
+    <button class="search-btn" type="submit">
+      <span>Search</span>
+    </button>
+  </form>
     </div>
   </nav>
    <!-- END nav -->

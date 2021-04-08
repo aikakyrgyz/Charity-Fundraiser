@@ -7,8 +7,8 @@
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
           <div class="col-md-7 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
-             <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="{% url 'home'%}">Home</a></span> <span>Create your post</span></p>
-            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Create your post</h1>
+             <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="{% url 'home'%}">Home</a></span> <span>Create your petition</span></p>
+            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Create your petition</h1>
           </div>
         </div>
       </div>
@@ -40,17 +40,12 @@
 <form method="post" enctype="multipart/form-data" class="mt-5" style="  margin-bottom: 10px;
   position: relative;padding-top: 21px;">
 {% csrf_token %}
-<!--  {{ post_form.as_p }}-->
-      {% for field in post_form %}
+      {% for field in petition_form %}
         <div class="fieldWrapper">
             {{ field.errors }}
   {{ field.label_tag }} {{ field }}
         </div>
     {% endfor %}
-  {{ formset.management_form }}
-  {% for form in formset %}
-  {{ form}}
-  {% endfor %}
 
   <button type="submit" class="btn btn-primary mt-5" style="  width: auto;
   background: #6347ff;
