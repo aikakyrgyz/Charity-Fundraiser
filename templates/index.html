@@ -266,7 +266,40 @@
         </div>
       </div>
     </section>
+<!--petitions-->
+    <section class="ftco-section bg-light">
+      <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section ftco-animate text-center">
+            <h2 class="mb-4">Petitions</h2>
+          </div>
+        </div>
+        <div class="row">
 
+ {% for article in petitions %}
+            <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry align-self-stretch" style="width:300px; height:auto;">
+              <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">
+              </a>
+              <div class="text p-4 d-block">
+              	<div class="meta mb-3">
+                  <div><a href="#">{{ article.created}}</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mb-4"><a href="{% url 'article' article.id %}">{{ article.title }}</a></h3>
+                <p class="time-loc"><span class="mr-2"><i class="icon-clock-o"></i></span> <span><i class="icon-map-o"></i></span></p>
+                <p>{{article.desciption|truncatewords:10}}</p>
+                <p><a href="{% url 'article' article.id %}">Read more <i class="ion-ios-arrow-forward"></i></a></p>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+        </div>
+      </div>
+    </section>
+
+<!--end petitions-->
 		<section class="ftco-section-3 img" style="background-image: url(images/bg_3.jpg);">
     	<div class="overlay"></div>
     	<div class="container">
@@ -294,5 +327,8 @@
     		</div>
     	</div>
     </section>
+
+
+
 </body>
 {% endblock %}

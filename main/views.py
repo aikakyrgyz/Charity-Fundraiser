@@ -44,6 +44,7 @@ class MainPageView(ListView):
             context['articles'] = Article.objects.filter(created__gte=start_date)
         else:
             context['articles'] = Article.objects.all()
+            context['petitions'] = Petition.objects.all()
         return context
 #
 # def category_detail(request, slug):
@@ -149,7 +150,7 @@ def make_donation(request):
 @login_required(login_url='login')
 def create_petition(request):
     if request.method == 'POST':
-        petition_form = PetitionForm(request.POST)
+        petition_form = PetitionForm(request.POST, request.FILES)
         if petition_form.is_valid():
             petition = petition_form.save()
             # amount = petition.amount

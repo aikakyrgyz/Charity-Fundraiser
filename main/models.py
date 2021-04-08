@@ -95,6 +95,7 @@ class Petition(models.Model):
     current_money = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     goal_signature = models.IntegerField(default=0)
     current_signature = models.IntegerField(default=0)
+    donate = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.title}'
