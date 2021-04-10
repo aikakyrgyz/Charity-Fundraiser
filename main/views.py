@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import ImageForm
 from .permissions import *
 from main.models import *
-from .forms import PostForm, CommentForm, DonationForm, PetitionForm
+from .forms import PostForm, CommentForm, DonationForm, PetitionForm, SignForm
 from datetime import timedelta
 
 
@@ -24,7 +24,6 @@ class MainPageView(ListView):
     context_object_name = 'articles'
     paginate_by = 3
 
-
     def get_template_names(self):
         template_name = super(MainPageView, self).get_template_names()
         search = self.request.GET.get('q')
@@ -36,12 +35,12 @@ class MainPageView(ListView):
         context = super().get_context_data(**kwargs)
         search = self.request.GET.get('q')
         filter = self.request.GET.get('filter')
+        start_date = timezone.now() - timedelta(days=1)
+        context['articles_recent'] = Article.objects.filter(created__gte=start_date)
         if search:
             context['articles'] = Article.objects.filter(Q(title__icontains=search)|
                                                          Q(desciption__icontains=search))
-        elif filter:
-            start_date = timezone.now() - timedelta(days=1)
-            context['articles'] = Article.objects.filter(created__gte=start_date)
+        # elif filter:
         else:
             context['articles'] = Article.objects.all()
             context['petitions'] = Petition.objects.all()
@@ -66,6 +65,7 @@ class CategoryDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['articles'] = Article.objects.filter(category_id=self.slug)
+        context['petitions'] = Petition.objects.filter(category_id=self.slug)
         return context
 
 
@@ -73,7 +73,7 @@ def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
     image = article.get_image
     images = article.article_images.exclude(id = image.id)
-    comments = article.comments.all()
+    comments = article.article_comments.all()
     new_comment = None
     if request.method == 'POST':
         # A comment was posted
@@ -129,6 +129,7 @@ def create_post(request):
         formset = ImageFormSet(queryset=Image.objects.none())
     return render(request, 'create_post.html', locals())
 
+
 @login_required(login_url='login')
 def make_donation(request):
     if request.method == 'POST':
@@ -144,8 +145,40 @@ def make_donation(request):
             # request.user.add_amount(donation.amount)
             return redirect(reverse('home'))
     else:
-            donation_form = DonationForm()
+        donation_form = DonationForm()
     return render(request, 'make_donation.html', locals())
+
+@login_required(login_url='login')
+def make_donation_petition(request, pk):
+    petition = get_object_or_404(Petition, pk=pk)
+    if petition.fundraiser==True:
+        if request.method == 'POST':
+            donation_form = DonationForm(request.POST)
+            if donation_form.is_valid():
+                donation = donation_form.save()
+                user = User.objects.get(pk=request.user.id)
+                user.donation_total+=donation.amount
+                user.save()
+                petition.current_money += donation.amount
+                petition.save()
+                return redirect(reverse('home'))
+        else:
+            donation_form = DonationForm()
+        return render(request, 'make_donation.html', locals())
+    else:
+        if request.method == 'POST':
+            sign_form = SignForm(request.POST)
+            if sign_form.is_valid():
+                sign = sign_form.save()
+                user = User.objects.get(pk=request.user.id)
+                user.sign_total+=1
+                user.save()
+                petition.current_signature += 1
+                petition.save()
+                return redirect(reverse('home'))
+        else:
+            sign_form = SignForm()
+        return render(request, 'make_sign.html', locals())
 
 @login_required(login_url='login')
 def create_petition(request):
@@ -162,7 +195,7 @@ def create_petition(request):
             # request.user.add_amount(donation.amount)
             return redirect(reverse('home'))
     else:
-            petition_form = PetitionForm()
+        petition_form = PetitionForm()
     return render(request, 'create_petition.html', locals())
 
 
@@ -216,10 +249,19 @@ def PostLike(request, pk):
     return HttpResponseRedirect(reverse('article', args=[str(pk)]))
 
 
+# def PetitionLike(request, pk):
+#     petition = get_object_or_404(Petition, id=pk)
+#     if petition.likes.filter(id=request.user.id).exists():
+#         petition.likes.remove(request.user)
+#     else:
+#         petition.likes.add(request.user)
+#
+#     return HttpResponseRedirect(reverse('petition_detail', args=[str(pk)]))
+
 
 def favorite_post(request, pk):
     post = get_object_or_404(Article, pk=pk)
-    if post.favorites.filter(id = request.user.id).exists():
+    if post.favorites.filter(id=request.user.id).exists():
         post.favorites.remove(request.user)
     else:
         post.favorites.add(request.user)
@@ -228,6 +270,34 @@ def favorite_post(request, pk):
 
 def post_favorite_list(request):
     user = request.user
-    favorite_posts = user.favorite.all() # related name
+    favorite_posts = user.article_favorite.all() # related name
     return render(request, 'post_favorite_list.html', locals())
+
+
+def petition_detail(request, pk):
+    petition = get_object_or_404(Petition, pk=pk)
+    # comments = petition.petition_comments.all()
+    # new_comment = None
+    # if request.method == 'POST':
+    #     # A comment was posted
+    #     comment_form = CommentForm(data=request.POST)
+    #     if comment_form.is_valid():
+    #         # Create Comment object but don't save to database yet
+    #         new_comment = comment_form.save(commit=False)
+    #         new_comment.user = request.user
+    #         # Assign the current post to the comment
+    #         new_comment.post = petition
+    #         # Save the comment to the database
+    #         new_comment.save()
+    # else:
+    #     comment_form = CommentForm()
+    # liked = False
+    # favorited = False
+    # if petition.favorites.filter(id=request.user.id).exists():
+    #     favorited=True
+    # if petition.likes.filter(id=request.user.id).exists():
+    #     liked = True
+    # number_of_likes = petition.total_likes()
+    # petition_is_liked = liked
+    return render(request, 'petition_detail.html', locals())
 

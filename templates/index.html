@@ -42,8 +42,19 @@
               <div class="text">
               	<h3 class="mb-4">View your Profile</h3>
               	<p></p>
-              	<p><a href="{% url 'profile' %}" class="btn btn-white px-3 py-2 mt-2">My profile</a></p>
+                  <p></p>
+                  <p></p>
+              	<p><a href="{% url 'profile' %}" class="btn btn-white px-3 py-2 mt-5">My profile</a></p>
                   <p> </p>
+              </div>
+            </div>
+          </div>
+                          <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+            <div class="block-18 color-2 align-items-stretch">
+              <div class="text">
+              	<h3 class="mb-4">Ask for Help</h3>
+              	<p>Create your own petition to raise money or signatures</p>
+              	<p><a href="{% url 'create_petition' %}" class="btn btn-white px-3 py-2 mt-2">Create Petition</a></p>
               </div>
             </div>
           </div>
@@ -153,90 +164,7 @@
           </div>
         </div>
 <!-----------End nav------------->
-
-
-
-
-<!--    <section class="ftco-section">-->
-<!--      <div class="container">-->
-<!--      	<div class="row justify-content-center mb-5 pb-3">-->
-<!--          <div class="col-md-7 heading-section ftco-animate text-center">-->
-<!--            <h2 class="mb-4">Latest Donations</h2>-->
-<!--            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="row">-->
-<!--        	<div class="col-lg-4 d-flex mb-sm-4 ftco-animate">-->
-<!--        		<div class="staff">-->
-<!--        			<div class="d-flex mb-4">-->
-<!--        				<div class="img" style="background-image: url(images/person_1.jpg);"></div>-->
-<!--        				<div class="info ml-4">-->
-<!--        					<h3><a href="teacher-single.html">Ivan Jacobson</a></h3>-->
-<!--        					<span class="position">Donated Just now</span>-->
-<!--        					<div class="text">-->
-<!--		        				<p>Donated <span>$300</span> for <a href="#">Children Needs Food</a></p>-->
-<!--		        			</div>-->
-<!--        				</div>-->
-<!--        			</div>-->
-<!--        		</div>-->
-<!--        	</div>-->
-<!--        	<div class="col-lg-4 d-flex mb-sm-4 ftco-animate">-->
-<!--        		<div class="staff">-->
-<!--        			<div class="d-flex mb-4">-->
-<!--        				<div class="img" style="background-image: url(images/person_2.jpg);"></div>-->
-<!--        				<div class="info ml-4">-->
-<!--        					<h3><a href="teacher-single.html">Ivan Jacobson</a></h3>-->
-<!--        					<span class="position">Donated Just now</span>-->
-<!--        					<div class="text">-->
-<!--		        				<p>Donated <span>$150</span> for <a href="#">Children Needs Food</a></p>-->
-<!--		        			</div>-->
-<!--        				</div>-->
-<!--        			</div>-->
-<!--        		</div>-->
-<!--        	</div>-->
-<!--        	<div class="col-lg-4 d-flex mb-sm-4 ftco-animate">-->
-<!--        		<div class="staff">-->
-<!--        			<div class="d-flex mb-4">-->
-<!--        				<div class="img" style="background-image: url(images/person_3.jpg);"></div>-->
-<!--        				<div class="info ml-4">-->
-<!--        					<h3><a href="teacher-single.html">Ivan Jacobson</a></h3>-->
-<!--        					<span class="position">Donated Just now</span>-->
-<!--        					<div class="text">-->
-<!--		        				<p>Donated <span>$250</span> for <a href="#">Children Needs Food</a></p>-->
-<!--		        			</div>-->
-<!--        				</div>-->
-<!--        			</div>-->
-<!--        		</div>-->
-<!--        	</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </section>-->
-
-
-<!--    <section class="ftco-section">-->
-<!--      <div class="container">-->
-<!--        <div class="row justify-content-center mb-5 pb-3">-->
-<!--          <div class="col-md-7 heading-section ftco-animate text-center">-->
-<!--            <h2 class="mb-4">Recent Articles</h2>-->
-<!--              {% for article in page_obj %}-->
-<!--              <div>-->
-<!--          <div class="col-md-4 d-flex ftco-animate">-->
-<!--            <div class="blog-entry align-self-stretch">-->
-<!--              <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">-->
-<!--              </a>-->
-<!--              <div class="text p-4 d-block">-->
-<!--                <div class="meta mb-3">-->
-<!--                  <div><a href="#">{{ article.created}}</a></div>-->
-
-<!--                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>-->
-<!--                </div>-->
-<!--                <h3 class="heading mt-3"><a href="{% url 'article' article.id %}">{{ article.title }}</a></h3>-->
-<!--                <p> {{article.desciption|truncatewords:10}}</p>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--                  {%endfor %}-->
-    <section class="ftco-section bg-light">
+<section class="ftco-section bg-light">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section ftco-animate text-center">
@@ -244,7 +172,7 @@
           </div>
         </div>
         <div class="row">
- {% for article in page_obj %}
+ {% for article in articles_recent %}
             <div class="col-md-4 d-flex ftco-animate">
           	<div class="blog-entry align-self-stretch" style="width:300px; height:auto;">
               <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">
@@ -266,7 +194,8 @@
         </div>
       </div>
     </section>
-<!--petitions-->
+
+<!--------------------------petitions------------------------->
     <section class="ftco-section bg-light">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
@@ -279,7 +208,7 @@
  {% for article in petitions %}
             <div class="col-md-4 d-flex ftco-animate">
           	<div class="blog-entry align-self-stretch" style="width:300px; height:auto;">
-              <a href="{% url 'article' article.id %}" class="block-20" style="background-image: url({{article.get_image}});">
+              <a href="{% url 'petition_detail' article.id %}" class="block-20" style="background-image: url({{article.image.url}});">
               </a>
               <div class="text p-4 d-block">
               	<div class="meta mb-3">
@@ -287,10 +216,29 @@
                   <div><a href="#">Admin</a></div>
                   <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
                 </div>
-                <h3 class="heading mb-4"><a href="{% url 'article' article.id %}">{{ article.title }}</a></h3>
-                <p class="time-loc"><span class="mr-2"><i class="icon-clock-o"></i></span> <span><i class="icon-map-o"></i></span></p>
-                <p>{{article.desciption|truncatewords:10}}</p>
-                <p><a href="{% url 'article' article.id %}">Read more <i class="ion-ios-arrow-forward"></i></a></p>
+                <h3 class="heading mb-4" ><a href="{% url 'petition_detail' article.id %}">{{ article.title }}</a></h3>
+<span style="color:black;">-------------------------------</span>
+                <p>{{article.body|truncatewords:10}}</p>
+                  <span style="color:black;">---------------------------------</span>
+
+
+                <p><a href="{% url 'petition_detail' article.id %}">Read more <i class="ion-ios-arrow-forward"></i></a></p>
+                                   {% if not article.fundraiser%} <h6 style="color:orange;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#8bc3cc" class="bi bi-vector-pen" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828L10.646.646zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
+  <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086.086-.026z"/>{%else%}<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#489c6c" class="bi bi-cash-stack" viewBox="0 0 16 16">
+  <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+  <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"/>
+</svg>{% endif %}
+                  </svg><span style="margin-left: 0px;">{% if article.fundraiser %} Fundraiser {% else %} Raising sinatures{% endif %}</span>  </h6>
+                  <br></br>
+<span>Goal:</span><button type="button" class="btn btn-info ml-2  mt-0">{%if article.fundraiser%}{{article.goal_money}}{%else%}{{article.goal_signature}}{%endif%}</button>
+                  <br></br>
+<span >Raised:</span><button type="button" class="btn btn-success ml-2 mt-0">{%if article.fundraiser%}{{article.current_money}}{%else%}{{article.current_signature}}{%endif%}</button>
+                  <br></br>
+<a type="button" href="{% url 'make_donation_petition' article.id %}" class="btn btn-outline-danger" style="width:150px;height:50px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#8bc3cc" class="bi bi-heart" viewBox="0 0 16 16">
+  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+</svg>    {%if article.fundraiser%}Donate{%else%}Sign{%endif%}</a>
+
               </div>
             </div>
           </div>
@@ -300,6 +248,8 @@
     </section>
 
 <!--end petitions-->
+
+
 		<section class="ftco-section-3 img" style="background-image: url(images/bg_3.jpg);">
     	<div class="overlay"></div>
     	<div class="container">
